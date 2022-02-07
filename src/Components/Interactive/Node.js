@@ -11,9 +11,9 @@ function Node(props) {
       }}
       onContextMenu={(event) => {
         event.preventDefault();
-        console.log(event);
       }}
       style={{
+        zIndex: 3,
         background: "white",
         color: "black",
         width: size + "px",
@@ -25,7 +25,16 @@ function Node(props) {
         top: top - size / 2 + "px",
       }}
     >
-      <p>{props["name"]}</p>
+      <p
+        style={{
+          WebkitUserSelect: "none",
+          MozUserSelect: "none",
+          msUserSelect: "none",
+          userSelect: "none",
+        }}
+      >
+        {props["name"]}
+      </p>
     </div>
   );
 }
