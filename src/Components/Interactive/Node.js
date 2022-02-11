@@ -1,16 +1,15 @@
 // TODO: Move this to a separate env file
 const size = 40;
 
-function Node(props) {
-  let top = props["top"];
-  let left = props["left"];
+function Node({ top, left, focusNode, openContextMenu, name }) {
   return (
     <div
       onMouseDown={(event) => {
-        if (event.button == 0) props.focusNode();
+        if (event.button == 0) focusNode();
       }}
       onContextMenu={(event) => {
         event.preventDefault();
+        openContextMenu();
       }}
       style={{
         zIndex: 3,
@@ -33,7 +32,7 @@ function Node(props) {
           userSelect: "none",
         }}
       >
-        {props["name"]}
+        {name}
       </p>
     </div>
   );

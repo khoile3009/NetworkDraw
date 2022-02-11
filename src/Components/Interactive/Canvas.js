@@ -2,6 +2,7 @@ import Node from "./Node";
 import Connection from "./Connection";
 
 import { useState, useCallback, useReducer, useRef } from "react";
+import ContextMenu from "./ContextMenu";
 
 const width = 1000;
 const height = 600;
@@ -54,15 +55,29 @@ const nodeReducer = (state, action) => {
         nodes: moveNode(state.nodes, action.index, action.event, action.canvas),
       };
       break;
+    case "openContextMenu":
+      newState = {
+        ...state,
+        contextMenuIndex: action.index,
+      };
+      break;
+    case "closeContextMenu":
+      newState = {
+        ...state,
+        contextMenuIndex: null,
+      };
+      break;
     default:
       newState = state;
   }
+  console.log(newState);
   return newState;
 };
 
 const initialState = {
   nodes: [],
   focusedIndex: null,
+  contextMenuIndex: null,
 };
 
 function Canvas() {
@@ -86,6 +101,9 @@ function Canvas() {
           width: width + "px",
           position: "relative",
         }}
+        onClick={(event) => {
+          dispatch({ type: "closeContextMenu" });
+        }}
         onMouseUp={(event) => {
           if (event.button == 0) dispatch({ type: "unfocusNode" });
         }}
@@ -104,6 +122,19 @@ function Canvas() {
           }
         }}
       >
+        <ContextMenu
+          left={
+            state.contextMenuIndex !== null
+              ? state.nodes[state.contextMenuIndex].left
+              : 0
+          }
+          top={
+            state.contextMenuIndex !== null
+              ? state.nodes[state.contextMenuIndex].top
+              : 0
+          }
+          show={state.contextMenuIndex !== null}
+        ></ContextMenu>
         {state.nodes.map((node, index) => {
           return (
             <Node
@@ -112,12 +143,14 @@ function Canvas() {
               focusNode={() => {
                 dispatch({ type: "focusNode", index: index });
               }}
+              openContextMenu={() =>
+                dispatch({ type: "openContextMenu", index: index })
+              }
             ></Node>
           );
         })}
         {state.nodes.map((node, index) => {
           return node.connections.map((connection) => {
-            console.log(connection);
             return (
               <Connection
                 key={connection}
