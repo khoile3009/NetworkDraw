@@ -1,11 +1,11 @@
 import "./ContextMenu.css";
 
-const offset = 10;
+const offset = 15;
 function ContextMenu({
   left,
   top,
   show,
-  toggleInfection,
+  toggleInfect,
   deleteNode,
   createConnection,
 }) {
@@ -20,7 +20,7 @@ function ContextMenu({
       }}
     >
       <ul>
-        <li>
+        <li onClick={toggleInfect}>
           <p>Toggle Infection</p>
         </li>
         <li>

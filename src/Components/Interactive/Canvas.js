@@ -26,10 +26,24 @@ const createNode = (nodes) => {
   return newNode;
 };
 
+const toggleInfectNode = (nodes, index) => {
+  nodes = nodes.map((node, id) => {
+    if (index === id) {
+      return { ...node, infected: !node.infected };
+    } else return node;
+  });
+  console.log(nodes[index]);
+  console.log(nodes);
+  // nodes[index] = { ...nodes[index], infected: !nodes[index].infected };
+  return nodes;
+};
+
 const moveNode = (nodes, index, event, canvas) => {
   const left = event.pageX - canvas.offsetLeft;
   const top = event.pageY - canvas.offsetTop;
   nodes[index] = { ...nodes[index], left: left, top: top };
+  console.log(nodes[index]);
+  console.log(nodes);
   return nodes;
 };
 
@@ -65,6 +79,12 @@ const nodeReducer = (state, action) => {
       newState = {
         ...state,
         contextMenuIndex: null,
+      };
+      break;
+    case "toggleInfect":
+      newState = {
+        ...state,
+        nodes: toggleInfectNode(state.nodes, action.index),
       };
       break;
     default:
@@ -134,6 +154,9 @@ function Canvas() {
               : 0
           }
           show={state.contextMenuIndex !== null}
+          toggleInfect={() =>
+            dispatch({ type: "toggleInfect", index: state.contextMenuIndex })
+          }
         ></ContextMenu>
         {state.nodes.map((node, index) => {
           return (

@@ -1,7 +1,7 @@
 // TODO: Move this to a separate env file
 const size = 40;
 
-function Node({ top, left, focusNode, openContextMenu, name }) {
+function Node({ top, left, focusNode, openContextMenu, name, infected }) {
   return (
     <div
       onMouseDown={(event) => {
@@ -13,7 +13,7 @@ function Node({ top, left, focusNode, openContextMenu, name }) {
       }}
       style={{
         zIndex: 3,
-        background: "white",
+        background: infected ? "salmon" : "white",
         color: "black",
         width: size + "px",
         height: size + "px",
